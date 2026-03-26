@@ -1,0 +1,32 @@
+import { defineConfig } from "tsup";
+
+export default defineConfig({
+  entry: ["src/index.ts"],
+  format: ["esm"],
+  dts: true,
+  splitting: false,
+  sourcemap: true,
+  clean: true,
+  treeshake: true,
+  external: [
+    "react",
+    "react-dom",
+    "react/jsx-runtime",
+    "@tanstack/react-table",
+    "react-router-dom",
+    "react-i18next",
+    "lucide-react",
+    "@radix-ui/react-slot",
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-label",
+    "@radix-ui/react-radio-group",
+    "@radix-ui/react-select",
+    "@radix-ui/react-popover",
+    "class-variance-authority",
+    "cmdk",
+    "clsx",
+    "tailwind-merge",
+    "xlsx",
+    "js-cookie",
+  ],
+});

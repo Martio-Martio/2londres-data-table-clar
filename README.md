@@ -2,7 +2,10 @@
 
 Table **TanStack Table** : filtres en en-tête, pagination compacte (pages + ellipses + « aller à la page »), export CSV (page courante ou liste complète), mode **client** ou **serveur**.
 
-**Guide d’utilisation** — ce document décrit l’installation, les props, des exemples copiables et les pièges courants.
+**Guide d'utilisation** — ce document décrit l'installation, les props, des exemples copiables et les pièges courants.
+
+<!-- GIF : démo globale du composant -->
+![Démo DataTableClar](./assets/demo-overview.gif)
 
 ---
 
@@ -72,6 +75,9 @@ Les entrées `main` / `exports` du `package.json` pointent vers `dist/` une fois
 
 Idéal quand **toutes les lignes** sont déjà chargées dans `data` (filtrage + pagination **locaux** TanStack).
 
+<!-- GIF : mode client — filtres locaux + pagination -->
+![Mode client](./assets/demo-client-mode.gif)
+
 ```tsx
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -115,15 +121,18 @@ export function MyListPage() {
 
 ## Mode serveur — filtres & pagination
 
-Quand les données viennent d’une **API** paginée et/ou filtrée.
+Quand les données viennent d'une **API** paginée et/ou filtrée.
+
+<!-- GIF : mode serveur — pagination + filtres API -->
+![Mode serveur](./assets/demo-server-mode.gif)
 
 ### Props obligatoires côté tableau
 
 - `paginationMode="server"`
 - `pagination` + `onPaginationChange` (état contrôlé, ex. `useState`)
 - `columnFilters` + `onColumnFiltersChange`
-- `serverPageCount` : nombre de pages renvoyé par l’API (0 si aucune page)
-- `totalItemsCount` : total d’éléments pour le compteur sous le titre
+- `serverPageCount` : nombre de pages renvoyé par l'API (0 si aucune page)
+- `totalItemsCount` : total d'éléments pour le compteur sous le titre
 
 ### Ce que fait **ton** code (hors package)
 
@@ -166,7 +175,7 @@ Utilise `meta: { type: "denied" }` pour **ne pas afficher** de contrôle de filt
 
 ### Avertissement dev
 
-Si `pagination` est contrôlé en mode serveur **sans** `columnFilters` / `onColumnFiltersChange`, un `console.warn` peut s’afficher : branche bien les deux.
+Si `pagination` est contrôlé en mode serveur **sans** `columnFilters` / `onColumnFiltersChange`, un `console.warn` peut s'afficher : branche bien les deux.
 
 ---
 
@@ -193,18 +202,21 @@ Props principales (voir `DataTableClarProps` dans le code pour la liste exhausti
 | `enableSelection` | `boolean?` | Colonne cases à cocher. |
 | `onSelectionChange` | `(ids: string[]) => void` | IDs sélectionnés. |
 | `onExportFullList` | `() => Promise<TData[]>` | Export CSV « liste complète » en mode serveur. |
-| `showCsvExportButton` | `boolean?` | Affiche le bouton CSV (souvent `false` par défaut dans le package ; le wrapper Process-Maker lie l’admin). |
+| `showCsvExportButton` | `boolean?` | Affiche le bouton CSV (souvent `false` par défaut dans le package ; le wrapper Process-Maker lie l'admin). |
 | `enableClientVolumeControl` | `boolean?` | Mode client : sélecteur « volume » + cookie (désactivable). |
 | `renderVolumeControl` | `ReactNode?` | Remplace le sélecteur de volume intégré. |
 | `onNotifyWarning` / `onNotifyError` / `onNotifyInfo` | callbacks | Feedback export / volume (si pas de wrapper app). |
 | `renderLoading` / `renderEmpty` / `renderError` | fonctions | Personnalise les états (le wrapper Process-Maker fournit les tabs par défaut). |
-| `renderCsvExportLoading` | `() => ReactNode` | Overlay pendant l’export async liste complète. |
+| `renderCsvExportLoading` | `() => ReactNode` | Overlay pendant l'export async liste complète. |
 
 ---
 
 ## Colonnes, `meta` et filtres UI
 
 Les filtres en tête suivent `columnDef.meta` (`DataTableColumnMetaType`) :
+
+<!-- GIF : types de filtres (text, date, select) -->
+![Filtres colonnes](./assets/demo-column-filters.gif)
 
 | `meta.type` | Comportement |
 |-------------|----------------|
@@ -223,16 +235,22 @@ Les filtres en tête suivent `columnDef.meta` (`DataTableColumnMetaType`) :
 
 ## États chargement / erreur / vide
 
+<!-- GIF : états loading → empty → error -->
+![États chargement / erreur / vide](./assets/demo-loading-states.gif)
+
 - **`loading.isLoading`** : affiche le skeleton (ou `loaderComponent`) **à la place des lignes**.
 - **`loading.isFetching`** + `data.length === 0`** : même chose (chargement initial).
-- **`loading.isFetching`** + données présentes : le tableau reste affiché ; une barre d’indication de refetch peut apparaître en bas (comportement du package).
-- **`error.message`** : affiche l’état erreur ; `refetch` affiche un bouton de retry si fourni.
+- **`loading.isFetching`** + données présentes : le tableau reste affiché ; une barre d'indication de refetch peut apparaître en bas (comportement du package).
+- **`error.message`** : affiche l'état erreur ; `refetch` affiche un bouton de retry si fourni.
 
 Personnalisation : `renderLoading`, `renderEmpty`, `renderError`.
 
 ---
 
 ## Sélection de lignes
+
+<!-- GIF : sélection checkbox + callback -->
+![Sélection de lignes](./assets/demo-row-selection.gif)
 
 ```tsx
 <DataTableClar
@@ -247,6 +265,9 @@ Les IDs correspondent à `row.original.id` : chaque ligne doit avoir un **`id` u
 ---
 
 ## Export CSV
+
+<!-- GIF : export CSV page courante + liste complète -->
+![Export CSV](./assets/demo-csv-export.gif)
 
 - **`showCsvExportButton`** : affiche le bouton (à brancher sur tes droits métier).
 - Dialogue : page courante **ou** liste complète.
@@ -301,7 +322,7 @@ Peers listées dans [`package.json`](./package.json) : `react`, `react-dom`, `@t
 
 ## Tailwind
 
-Inclure les sources du package dans le **content** / scan des classes Tailwind du consommateur. Dans ce monorepo, l’import via Vite inclut déjà `packages/data-table-clar/src`, donc les classes sont prises en compte au build.
+Inclure les sources du package dans le **content** / scan des classes Tailwind du consommateur. Dans ce monorepo, l'import via Vite inclut déjà `packages/data-table-clar/src`, donc les classes sont prises en compte au build.
 
 ---
 
@@ -309,8 +330,8 @@ Inclure les sources du package dans le **content** / scan des classes Tailwind d
 
 | Problème | Piste |
 |----------|--------|
-| Filtres serveur sans effet | Vérifier `onColumnFiltersChange` + mapping vers l’API + invalidation / clés de requête. |
-| Pagination bloquée | `serverPageCount` cohérent avec l’API (`Math.ceil(total / pageSize)` ou champ `totalPages`). |
+| Filtres serveur sans effet | Vérifier `onColumnFiltersChange` + mapping vers l'API + invalidation / clés de requête. |
+| Pagination bloquée | `serverPageCount` cohérent avec l'API (`Math.ceil(total / pageSize)` ou champ `totalPages`). |
 | Mauvaise ligne sélectionnée | `getRowId` utilise `row.id` : garantir des **id uniques** côté données. |
 | Pas de styles | Scanner les chemins du package dans Tailwind. |
 | Export liste complète serveur vide | Implémenter `onExportFullList` ; sinon seule la page courante est exportable. |

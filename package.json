@@ -1,6 +1,6 @@
 {
   "name": "@2londres/data-table-clar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "DataTableClar — table TanStack avec pagination, filtres, export CSV (client/serveur).",
   "type": "module",
   "sideEffects": false,
